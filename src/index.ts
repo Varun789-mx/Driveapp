@@ -80,7 +80,7 @@ app.get("/download", async (req, res) => {
                 downloads: true,
             }
         })
-        if (!record?.original_url) {
+        if (!record || !record.original_url) {
             return res.status(404).json({
                 error: "assest doesn't exist"
             })
@@ -91,12 +91,14 @@ app.get("/download", async (req, res) => {
         }
         const filename = path.basename(record?.original_url.split("?")[0]);
 
-        // Set headers to trigger browser download
         res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
         res.setHeader("Content-Type", cloudnairyResponse.headers.get("content-type") || "application/octet-stream");
 
         // Update download count
-
+        await prisma.link.updateMany({
+            where: { short_url: short_id },
+            data: { downloads: { increment: 1 } }
+        })
         // Pipe the Web ReadableStream to Node response
         const { Readable } = await import("stream");
         Readable.fromWeb(cloudnairyResponse.body as any).pipe(res);
