@@ -35,7 +35,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         }
         let cloudinaryurl = await UploadOnCloudinary(file.path);
         if (!cloudinaryurl) {
-            return res.status(500).json({ error: "File upload failed" });
+            return res.status(500).json({ error: "File upload failed"+cloudinaryurl });
         }
         const addToDb = await prisma.link.create({
             data: {
