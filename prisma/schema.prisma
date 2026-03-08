@@ -16,7 +16,7 @@ datasource db {
 model User {
   id     Int     @id @default(autoincrement())
   userId String  @unique
-  Link   Link[]
+  // Link   Link[]
 }
 
 
@@ -24,8 +24,8 @@ model Link {
   id           Int       @id @default(autoincrement())
   original_url String
   short_url    String
-  clicks       Int       @default(0)
+  downloads       Int       @default(0)
   timeStamp    DateTime  @default(now())
-  authorId     String
-  author       User     @relation(fields: [authorId],references: [userId])
+  // authorId     String
+  // author       User     @relation(fields: [authorId],references: [userId])
 }
