@@ -1,4 +1,4 @@
-import { ListBucketsCommand, S3Client } from "@aws-sdk/client-s3";
+import { S3Client } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage"
 import path from "node:path";
 import { createReadStream } from "node:fs";
@@ -44,5 +44,3 @@ export const UploadFile = async (localfilePath: string, destinationKey?: string)
     console.log(`File upload successfull ${fileName}`)
     return result;
 }
-
-console.log(await S3.send(new ListBucketsCommand({})));
