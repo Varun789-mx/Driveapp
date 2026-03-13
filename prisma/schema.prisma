@@ -16,16 +16,15 @@ datasource db {
 model User {
   id     Int     @id @default(autoincrement())
   userId String  @unique
-  // Link   Link[]
+  assets Asset[]
 }
 
-
-model Link {
-  id           Int       @id @default(autoincrement())
-  original_url String
-  short_url    String
-  downloads       Int       @default(0)
-  timeStamp    DateTime  @default(now())
-  // authorId     String
-  // author       User     @relation(fields: [authorId],references: [userId])
+model Asset {
+  id        Int      @id @default(autoincrement())
+  short_url String
+  key String
+  downloads Int      @default(0)
+  timeStamp DateTime @default(now())
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [userId])
 }
