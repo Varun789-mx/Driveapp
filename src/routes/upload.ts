@@ -10,7 +10,7 @@ const router = Router()
 
 router.post("/upload", upload.single("file"), async (req, res) => {
     try {
-        const userId = req.user!;
+        const userId = req.userId!;
         const file = req.file;
         if (!file) {
             return res.status(400).json({
@@ -25,7 +25,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
             data: {
                 key: path.basename(file.path),
                 short_url: nanoid(6),
-                authorId: userId.id
+                authorId: userId
             },
             select: {
                 key: true,
@@ -40,10 +40,12 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         fs.unlinkSync(file.path);
         return res.status(200).json({
             success: true,
-            short_url: `${process.env.BACKEND_URL}/download/?short_id=${addToDb.short_url}`,
+            short_url: `${process.env.BACKEND_URL}/api/download/?short_id=${addToDb.short_url}`,
         });
     } catch (error) {
-        return res.status(500).json({ error: "Internal server error" });
+        return res.status(500).json({
+            error: "Internal server error" + error,
+        });
     }
 });
 

@@ -9,7 +9,7 @@ export const requireAuth = async (req: ExpressReq, res: ExpressRes, next: NextFu
     }
     try {
         const JwtPayload = verify(token, secret);
-        req.user = JwtPayload;
+        req.userId = JwtPayload;
         next();
     } catch (error) {
         return res.status(500).json({
